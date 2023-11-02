@@ -1,6 +1,6 @@
 # Codechef_starters_106_Div3
 
-# First Question
+# Chef Fantasy 11
 <details>
 <summary>Python</summary>
 
