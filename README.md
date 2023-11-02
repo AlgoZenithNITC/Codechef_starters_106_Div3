@@ -1,264 +1,333 @@
 # Codechef_starters_106_Div3
 
-# First Question
+# Chef Fantasy 11
 <details>
-
-  <summary>Python CODE</summary>
-	BRUTE FORCE
+<summary>Python</summary>
 
 ```python
-	class Solution:
-		def minimumSum(self, nums):
-			sum = float('inf')
-			for i in range(len(nums) - 2):
-				for j in range(i + 1, len(nums) - 1):
-					for k in range(j + 1, len(nums)):
-						if nums[i] < nums[j] and nums[j] > nums[k]:
-							sum = min(sum, nums[i] + nums[j] + nums[k])
-			return -1 if sum == float('inf') else sum
+t = int(input())
+
+for _ in range(t):
+    n = int(input())
+    result = n * (n - 1)
+    print(result)
+
 ```
-
 </details>
 
 <details>
-  <summary>C++</summary>
-  
-  ```cpp
-    class Solution {
-		public:
-			int minimumSum(vector<int>& nums) {
-				int sum = INT_MAX;
-				for (int i = 0; i < nums.size() - 2; i++) {
-					for (int j = i + 1; j < nums.size() - 1; j++) {
-						for (int k = j + 1; k < nums.size(); k++) {
-							if (nums[i] < nums[j] && nums[j] > nums[k])
-								sum = min(sum, nums[i] + nums[j] + nums[k]);
-						}
-					}
-				}
-				return sum==INT_MAX?-1:sum;
-			}
-		};
-  ```
+<summary>Cpp</summary>
 
-</details>
+```cpp
+#include <iostream>
+using namespace std;
 
-
-<details>
-  <summary>JAVA</summary>
-  
-  ```java
-	class Solution {
-		public int minimumSum(int[] nums) {
-			int sum = Integer.MAX_VALUE;
-			for (int i = 0; i < nums.length - 2; i++) {
-				for (int j = i + 1; j < nums.length - 1; j++) {
-					for (int k = j + 1; k < nums.length; k++) {
-						if (nums[i] < nums[j] && nums[j] > nums[k]) {
-							sum = Math.min(sum, nums[i] + nums[j] + nums[k]);
-						}
-					}
-				}
-			}
-			return (sum == Integer.MAX_VALUE) ? -1 : sum;
-		}
+int main() {
+	// your code goes here
+    int n, t;
+    cin >> t;
+	while (t--) {
+	    cin >> n;
+	    cout << n * (n - 1) << endl;
 	}
-  ```
-</details>
-
-
-# Second Question - Minimum Sum of Mountain Triplets II
-
-<details>
-    <summary>Python Code</summary>
-  
-  ```
-    class Solution:
-        def minimumSum(self, nums):
-            m = float('inf')
-            n = len(nums)
-            l = [0] * n
-            r = [0] * n
-            l[0] = 0
-            
-            for i in range(1, n):
-                if nums[l[i - 1]] < nums[i]:
-                    l[i] = l[i - 1]
-                else:
-                    l[i] = i
-            
-            r[n - 1] = n - 1
-            for i in range(n - 2, -1, -1):
-                if nums[r[i + 1]] < nums[i]:
-                    r[i] = r[i + 1]
-                else:
-                    r[i] = i
-            
-            for i in range(n):
-                if nums[l[i]] < nums[i] and nums[i] > nums[r[i]] and l[i] < i and i < r[i]:
-                    m = min(m, nums[i] + nums[l[i]] + nums[r[i]])
-            
-            if m == float('inf'):
-                return -1
-            return m
-
-  ```
+	return 0;
+}
+```
 </details>
 
 
 <details>
-  <summary>C++</summary>
-  
-  ```
-    class Solution {
-        public:
-            int minimumSum(vector<int>& nums) {
-                int m = INT_MAX;
-                int n = nums.size();
-                vector<int> l(n),r(n);
-                l[0]=0;
-                for(int i=1;i<n;i++)
-                {
-                    if(nums[l[i-1]]<nums[i])
-                    {
-                        l[i]=l[i-1];
-                    }
-                    else l[i]=i;
-                }
-                r[n-1]=n-1;
-                for(int i=n-2;i>=0;i--)
-                {
-                    if(nums[r[i+1]]<nums[i])
-                    {
-                        r[i]=r[i+1];
-                    }
-                    else r[i]=i;
-                }
-                for(int i=0;i<n;i++)
-                {
-                    if(nums[l[i]]<nums[i] && nums[i]>nums[r[i]] && l[i]<i && i<r[i])
-                    {
-                        m=min(m,nums[i]+nums[l[i]]+nums[r[i]]);
-                    }
-                }
-                if(m==INT_MAX) return -1;
-                return m;
+<summary>Java</summary>
+
+```java
+import java.util.Scanner;
+
+public class Main {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        int t = sc.nextInt();
+
+        while (t-- > 0) {
+            int n = sc.nextInt();
+            int result = n * (n - 1);
+            System.out.println(result);
+        }
+    }
+}
+
+```
+</details>
+
+<!-- Second Question -->
+# Playing with OR
+
+<details>
+<summary>Python</summary>
+
+### Brute Force
+```python
+t = int(input())
+
+for _ in range(t):
+    n, k = map(int, input().split())
+    v = list(map(int, input().split()))
+    c = 0
+    for i in range(n - k + 1):
+        odd = 0
+        for j in range(i, i + k):
+            if v[j] % 2 == 1:
+                odd = 1
+                break
+        if odd:
+            c += 1
+    print(c)
+```
+TC : O(N^2)
+
+SC : O(1)
+
+### Optimized
+```python
+def solve():
+    n, k = map(int, input().split())
+    a = list(map(int, input().split()))
+    ans = 0
+    no_odd = [0] * (n + 1)
+    for i in range(1, n + 1):
+        if a[i] % 2:
+            no_odd[i] = 1
+        no_odd[i] += no_odd[i - 1]
+    for i in range(1, n - k + 2):
+        if no_odd[i + k - 1] - no_odd[i - 1] > 0:
+            ans += 1
+    print(ans)
+
+t = int(input())
+for _ in range(t):
+    solve()
+
+```
+TC : O(N)
+SC : O(N)
+
+</details>
+
+<details>
+<summary>Cpp</summary>
+
+### Brute Force
+```cpp
+#include <bits/stdc++.h>
+using namespace std;
+
+int main() {
+	// your code goes here
+	int t;
+	cin >> t;
+	while (t--) {
+	    int k, n;
+	    cin >> n >> k;
+	    vector<int> v(n, 0);
+	    for (int i = 0; i < n; i++) {
+	        cin >> v[i];
+	    }
+	    int c = 0;
+	    for (int i = 0; i <= n - k; i++) {
+	        int odd = 0;
+	        for (int j = i; j < i + k; j++) {
+	            if (v[j] % 2 == 1) {
+	                odd = 1;
+	                break;
+	            }
+	        }
+	        if (odd) {
+	            c++;
+	        }
+	    }
+	    cout << c << endl;
+	}
+	return 0;
+}
+```
+TC : O(N^2)
+
+SC : O(1)
+### Optimized
+```cpp
+#include <bits/stdc++.h>
+using namespace std;
+
+void solve() {
+    int n, k, ans = 0;
+    cin >> n >> k;
+    vector<int> a(n + 1), noOdd(n + 1, 0);
+    for (int i = 1; i <= n; i++) {
+        cin >> a[i];
+        if (a[i] % 2) {
+            noOdd[i] = 1;
+        }
+        noOdd[i] += noOdd[i - 1];
+    }
+    for (int i = 1; i + k - 1 <= n; i++) {
+        if (noOdd[i + k - 1] - noOdd[i - 1] > 0) {
+            ans++;
+        }
+    }
+    cout << ans << "\n";
+}
+
+int main() {
+    int t;
+    cin >> t;
+    while (t--) {
+        solve();
+    }
+    return 0;
+}
+```
+TC : O(N)
+
+SC : O(N)
+
+</details>
+<!-- Java -->
+<details>
+<summary>Java</summary>
+
+### Brute Force
+```Java
+import java.util.Scanner;
+
+public class Main {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        int t = sc.nextInt();
+
+        while (t-- > 0) {
+            int k, n;
+            n = sc.nextInt();
+            k = sc.nextInt();
+            int[] v = new int[n];
+            for (int i = 0; i < n; i++) {
+                v[i] = sc.nextInt();
             }
-        };
-  ```
-</details>
-
-
-<details>
-  <summary>JAVA</summary>
-  
-  ```
-        class Solution {
-              public int minimumSum(int[] nums) {
-                  int m = Integer.MAX_VALUE;
-                  int n = nums.length;
-                  int[] l = new int[n];
-                  int[] r = new int[n];
-                  l[0] = 0;
-                  
-                  for (int i = 1; i < n; i++) {
-                      if (nums[l[i - 1]] < nums[i]) {
-                          l[i] = l[i - 1];
-                      } else {
-                          l[i] = i;
-                      }
-                  }
-                  
-                  r[n - 1] = n - 1;
-                  for (int i = n - 2; i >= 0; i--) {
-                      if (nums[r[i + 1]] < nums[i]) {
-                          r[i] = r[i + 1];
-                      } else {
-                          r[i] = i;
-                      }
-                  }
-                  
-                  for (int i = 0; i < n; i++) {
-                      if (nums[l[i]] < nums[i] && nums[i] > nums[r[i]] && l[i] < i && i < r[i]) {
-                          m = Math.min(m, nums[i] + nums[l[i]] + nums[r[i]]);
-                      }
-                  }
-                  
-                  if (m == Integer.MAX_VALUE) {
-                      return -1;
-                  }
-                  return m;
-              }
-          }
-  ```
-</details>
-
-# Third Question
-<details>
-
-  <summary>Python CODE</summary>
-	BRUTE FORCE
-
-```python
-	class Solution:
-		def minimumSum(self, nums):
-			sum = float('inf')
-			for i in range(len(nums) - 2):
-				for j in range(i + 1, len(nums) - 1):
-					for k in range(j + 1, len(nums)):
-						if nums[i] < nums[j] and nums[j] > nums[k]:
-							sum = min(sum, nums[i] + nums[j] + nums[k])
-			return -1 if sum == float('inf') else sum
+            int c = 0;
+            for (int i = 0; i <= n - k; i++) {
+                int odd = 0;
+                for (int j = i; j < i + k; j++) {
+                    if (v[j] % 2 == 1) {
+                        odd = 1;
+                        break;
+                    }
+                }
+                if (odd == 1) {
+                    c++;
+                }
+            }
+            System.out.println(c);
+        }
+    }
+}
 ```
 
+### Optimized
+```Java
+import java.util.Scanner;
+
+public class Main {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        int t = sc.nextInt();
+
+        while (t-- > 0) {
+            int n, k, ans = 0;
+            n = sc.nextInt();
+            k = sc.nextInt();
+            int[] a = new int[n + 1];
+            int[] noOdd = new int[n + 1];
+            for (int i = 1; i <= n; i++) {
+                a[i] = sc.nextInt();
+                if (a[i] % 2 == 1) {
+                    noOdd[i] = 1;
+                }
+                noOdd[i] += noOdd[i - 1];
+            }
+            for (int i = 1; i + k - 1 <= n; i++) {
+                if (noOdd[i + k - 1] - noOdd[i - 1] > 0) {
+                    ans++;
+                }
+            }
+            System.out.println(ans);
+        }
+    }
+}
+```
+</details>
+
+# Guess the Winner
+
+<details>
+<summary>Python</summary>
+
+```python
+t = int(input())
+
+for _ in range(t):
+    n = int(input())
+    if n == 1 or n % 2 == 0:
+        print("Bob")
+    else:
+        print("Alice")
+```
 </details>
 
 <details>
-  <summary>C++</summary>
-  
-  ```cpp
-    class Solution {
-		public:
-			int minimumSum(vector<int>& nums) {
-				int sum = INT_MAX;
-				for (int i = 0; i < nums.size() - 2; i++) {
-					for (int j = i + 1; j < nums.size() - 1; j++) {
-						for (int k = j + 1; k < nums.size(); k++) {
-							if (nums[i] < nums[j] && nums[j] > nums[k])
-								sum = min(sum, nums[i] + nums[j] + nums[k]);
-						}
-					}
-				}
-				return sum==INT_MAX?-1:sum;
-			}
-		};
-  ```
+<summary>Cpp</summary>
 
+```cpp
+#include <bits/stdc++.h>
+using namespace std;
+
+int main() {
+    int t = 1;
+    cin >> t;
+
+    while(t--) {
+        int n;
+        cin >> n;
+        if(n == 1 || n % 2 == 0)
+	        cout << "Bob" << endl;
+        else
+	        cout << "Alice" << endl;
+    }
+    return 0;
+}
+```
 </details>
-
 
 <details>
-  <summary>JAVA</summary>
-  
-  ```java
-	class Solution {
-		public int minimumSum(int[] nums) {
-			int sum = Integer.MAX_VALUE;
-			for (int i = 0; i < nums.length - 2; i++) {
-				for (int j = i + 1; j < nums.length - 1; j++) {
-					for (int k = j + 1; k < nums.length; k++) {
-						if (nums[i] < nums[j] && nums[j] > nums[k]) {
-							sum = Math.min(sum, nums[i] + nums[j] + nums[k]);
-						}
-					}
-				}
-			}
-			return (sum == Integer.MAX_VALUE) ? -1 : sum;
-		}
-	}
-  ```
-</details>
+<summary>Java</summary>
 
+```Java
+import java.util.Scanner;
+
+public class Main {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        int t = sc.nextInt();
+
+        while (t-- > 0) {
+            int n = sc.nextInt();
+            if (n == 1 || n % 2 == 0) {
+                System.out.println("Bob");
+            } else {
+                System.out.println("Alice");
+            }
+        }
+    }
+}
+```
+</details>
 
 # Save People
 
@@ -344,7 +413,7 @@
 
 
 
-# Counting Possibilites
+# Count Possibilites
 
 <details>
     <summary>Python Code</summary>
